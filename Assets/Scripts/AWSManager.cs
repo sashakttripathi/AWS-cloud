@@ -15,6 +15,7 @@ public class AWSManager : MonoBehaviour
     {
         public byte[] data;
     }
+
     // Android Fix
     public void UsedOnlyForAOTCodeGeneration()
     {
@@ -109,7 +110,42 @@ public class AWSManager : MonoBehaviour
         });
     }
 
-    public void Upload(string key)
+    public void UploadVideoMP4(string key)
+    {
+        if (key == "")
+            return;
+
+        
+
+        // Texture2D copyTex = FindObjectOfType<Write>().CallDuplicateTexture();
+        image _image; 
+        // _image.data = copyTex.EncodeToPNG();
+
+        MemoryStream ms = new MemoryStream(_image.data);
+
+        PostObjectRequest request = new PostObjectRequest()
+        {
+            Bucket = bucketName,
+            Key = key,
+            InputStream = ms,
+            CannedACL = S3CannedACL.Private,
+            Region = S3Region
+        };
+
+        S3Client.PostObjectAsync(request, (response) =>
+        {
+            if(response.Exception == null)
+            {
+                Debug.Log("Uploaded");
+            }
+            else
+            {
+                Debug.Log(response.Exception);
+            }
+        });
+    }
+
+    public void UploadPNGImage(string key)
     {
         if (key == "")
             return;
@@ -142,9 +178,9 @@ public class AWSManager : MonoBehaviour
         });
     }
 
-    byte[] downloadedImageData;
+    // byte[] downloadedImageData;
 
-    public void Download(string key)
+    public void DownloadPNGImage(string key)
     {
         if (key == "")
             return;
@@ -168,7 +204,7 @@ public class AWSManager : MonoBehaviour
                     {
                         using (MemoryStream ms = new MemoryStream())
                         {
-                            var buffer = new byte[50000];                                               // 50 MB files max
+                            var buffer = new byte[50000];                                               // 50 MB images max
                             var bytesRead = default(int);
                             while((bytesRead = sr.BaseStream.Read(buffer, 0, buffer.Length)) > 0)
                             {
