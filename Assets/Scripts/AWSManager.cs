@@ -25,7 +25,7 @@ public class AWSManager : MonoBehaviour
 
 
     // Cognito setup
-    private string IdentityPoolId = "ap-south-1:85fe3eff-2e69-4e81-9fdc-673bd0f422d4";
+    private string IdentityPoolId = ""; // put your identity pool id from aws console
     private string Region = RegionEndpoint.APSouth1.SystemName;
 
     private static AWSManager _instance;
